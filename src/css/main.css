@@ -1,0 +1,19 @@
+.esri-ui-right {
+    bottom: 35px;
+    right: 0px;
+    flex-flow: column;
+}
+
+.esri-ui-right .esri-component {
+    margin-bottom: 10px;
+}
+
+.esri-component .esri-expand__content {
+    position: absolute;
+    bottom: 0px;
+    right: 30px;
+}
+
+.esri-ui-corner .esri-widget.esri-basemap-toggle {
+    z-index: 0;
+}
