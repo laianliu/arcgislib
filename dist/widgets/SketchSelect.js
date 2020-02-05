@@ -1,4 +1,4 @@
-define(["require", "exports", "esri/widgets/Expand", "esri/layers/GraphicsLayer", "../analyst/core/SpatialQuery"], function (require, exports, Expand_1, GraphicsLayer_1, SpatialQuery_1) {
+define(["require", "exports", "esri/widgets/Expand", "esri/layers/GraphicsLayer", "../analyst/SpatialQuery"], function (require, exports, Expand_1, GraphicsLayer_1, SpatialQuery_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var SketchSelect = /** @class */ (function () {

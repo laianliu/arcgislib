@@ -1,7 +1,7 @@
 import Expand from 'esri/widgets/Expand'
 import Sketch from 'esri/widgets/Sketch'
 import GraphicsLayer from 'esri/layers/GraphicsLayer'
-import SpatialQuery from '../analyst/core/SpatialQuery'
+import SpatialQuery from '../analyst/SpatialQuery'
 export default class SketchSelect {
   constructor(view: object, position: object, index: number) {
     this.graphicsLayer = new GraphicsLayer()
