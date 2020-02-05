@@ -15,8 +15,8 @@ import esriRequest from 'esri/request'
 import QueryTask from 'esri/tasks/QueryTask'
 import Query from 'esri/tasks/support/Query'
 import widgetUtils from './widgetUtils'
-import promiseUtils from 'esri/core/promiseUtils'
-import watchUtils from 'esri/core/watchUtils'
+import promiseUtils from 'esri/promiseUtils'
+import watchUtils from 'esri/watchUtils'
 
 export default class MapApp {
   constructor(appConfig: object, callBackFn: FunctionStringCallback) {
