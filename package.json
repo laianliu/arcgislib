@@ -1,6 +1,6 @@
 {
     "name": "epf-gislib",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "基于ArcGIS For JS 4.11开发",
     "main": "index.js",
     "scripts": {
