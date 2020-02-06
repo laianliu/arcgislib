@@ -8,14 +8,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/laianliu/gislib.git"
+        "url": "git+https://github.com/laianliu/epf-gislib.git"
     },
     "author": "704328204@qq.com",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/laianliu/gislib/issues"
+        "url": "https://github.com/laianliu/epf-gislib/issues"
     },
-    "homepage": "https://github.com/laianliu/gislib#readme",
+    "homepage": "https://github.com/laianliu/epf-gislib#readme",
     "publishConfig": {
         "access": "public"
     },
