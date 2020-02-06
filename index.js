@@ -1,13 +1,13 @@
 import { loadScript, loadCss, loadModules } from 'esri-loader'
 export function loadGISUri(uriObj) {
-    if (!urlObj) return
+    if (!uriObj) return
     return new Promise(resolve => {
-        if (urlObj.cssUris) {
+        if (uriObj.cssUris) {
             CSSRuleList.forEach(cssUri => {
                 loadCss(cssUri)
             })
-            if (urlObj.jsUri) {
-                loadScript({ url: urlObj.jsUri }).then(res => {
+            if (uriObj.jsUri) {
+                loadScript({ url: uriObj.jsUri }).then(res => {
                     console.log('GISUri Loaded!')
                     resolve(true)
                 })
