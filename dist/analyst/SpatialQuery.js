@@ -1,6 +1,12 @@
-define(["require", "exports", "esri/tasks/support/Query", "esri/tasks/QueryTask", "esri/layers/GraphicsLayer", "esri/request", "esri/core/urlUtils"], function (require, exports, Query_1, QueryTask_1, GraphicsLayer_1, request_1, urlUtils_1) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+define(["require", "exports", "esri/tasks/support/Query", "esri/tasks/QueryTask", "esri/layers/GraphicsLayer", "esri/request", "esri/core/urlUtils"], function (require, exports, Query_1, QueryTask_1, GraphicsLayer_1, esriRequest, urlUtils) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Query_1 = __importDefault(Query_1);
+    QueryTask_1 = __importDefault(QueryTask_1);
+    GraphicsLayer_1 = __importDefault(GraphicsLayer_1);
     var SpatialQuery = /** @class */ (function () {
         function SpatialQuery(mapApp, layerId, geometry) {
             this.mapApp = mapApp;
@@ -180,7 +186,7 @@ define(["require", "exports", "esri/tasks/support/Query", "esri/tasks/QueryTask"
                 method: 'post',
                 responseType: 'json'
             };
-            return request_1.default(url, options);
+            return esriRequest(url, options);
         };
         SpatialQuery.prototype.createQueryTask2 = function (url, data) {
             var options = {
@@ -193,7 +199,7 @@ define(["require", "exports", "esri/tasks/support/Query", "esri/tasks/QueryTask"
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             };
-            return request_1.default(urlUtils_1.default.addProxy(url).trim(), options);
+            return esriRequest(urlUtils.addProxy(url).trim(), options);
         };
         return SpatialQuery;
     }());

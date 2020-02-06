@@ -1,9 +1,9 @@
 import Query from 'esri/tasks/support/Query'
 import QueryTask from 'esri/tasks/QueryTask'
 import GraphicsLayer from 'esri/layers/GraphicsLayer'
-import esriRequest from 'esri/request'
-import esriConfig from 'esri/config'
-import urlUtils from 'esri/core/urlUtils'
+import esriRequest = require('esri/request')
+import esriConfig = require('esri/config')
+import urlUtils = require('esri/core/urlUtils')
 export default class SpatialQuery {
   constructor(mapApp: object, layerId: string, geometry: object) {
     this.mapApp = mapApp

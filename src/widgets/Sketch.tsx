@@ -1,11 +1,11 @@
 import Expand from 'esri/widgets/Expand'
 import Sketch from 'esri/widgets/Sketch'
-import GraphicsLayer from 'esri/layers/GraphicsLayer'
+import GraphicsLayer1 from 'esri/layers/GraphicsLayer'
 export default class GraphicsLayer {
   constructor(view: object, position: object, index: number) {
     this.view = view
     this.panel = document.getElementById('sketchPanel')
-    this.graphicsLayer = new GraphicsLayer({
+    this.graphicsLayer = new GraphicsLayer1({
       title: 'SGLayer',
       id: 'SGLayer',
       listMode: 'hide',

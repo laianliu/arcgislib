@@ -1,6 +1,17 @@
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", "esri/geometry/support/jsonUtils", "./analyst/AttributeQuery", "./analyst/SpatialQuery", "esri/geometry/Point", "esri/config", "./LayerFactory", "./utils", "esri/request", "esri/tasks/QueryTask", "esri/tasks/support/Query", "./widgetUtils", "esri/core/promiseUtils", "esri/core/watchUtils"], function (require, exports, Map_1, MapView_1, Graphic_1, jsonUtils_1, AttributeQuery_1, SpatialQuery_1, Point_1, config_1, LayerFactory_1, utils_1, request_1, QueryTask_1, Query_1, widgetUtils_1, promiseUtils_1, watchUtils_1) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", "esri/geometry/support/jsonUtils", "./analyst/AttributeQuery", "./analyst/SpatialQuery", "esri/geometry/Point", "esri/config", "./LayerFactory", "./utils", "esri/request", "esri/tasks/QueryTask", "esri/tasks/support/Query", "./widgetUtils", "./epsg/4326", "esri/core/promiseUtils", "esri/core/watchUtils"], function (require, exports, Map_1, MapView_1, Graphic_1, jsonUtils, AttributeQuery_1, SpatialQuery_1, Point_1, esriConfig, LayerFactory, utils, esriRequest, QueryTask_1, Query_1, widgetUtils, epsg4326, promiseUtils, watchUtils) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Map_1 = __importDefault(Map_1);
+    MapView_1 = __importDefault(MapView_1);
+    Graphic_1 = __importDefault(Graphic_1);
+    AttributeQuery_1 = __importDefault(AttributeQuery_1);
+    SpatialQuery_1 = __importDefault(SpatialQuery_1);
+    Point_1 = __importDefault(Point_1);
+    QueryTask_1 = __importDefault(QueryTask_1);
+    Query_1 = __importDefault(Query_1);
     var MapApp = /** @class */ (function () {
         function MapApp(appConfig, callBackFn) {
             window.MapApp = this;
@@ -37,25 +48,25 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             this.callBackFn = callBackFn;
             this.layerLoadedObj = {};
             this.appConfig = appConfig;
-            config_1.default.appConfig = appConfig;
-            config_1.default.mapType = this.mapType;
-            config_1.default.httpProxy = appConfig.httpProxy;
+            esriConfig.appConfig = appConfig;
+            esriConfig.mapType = this.mapType;
+            esriConfig.httpProxy = appConfig.httpProxy;
             var viewOptions = appConfig.mapview || {};
             viewOptions.constraints = viewOptions.constraints || {};
             if (appConfig.httpProxy) {
                 this.httpProxy = appConfig.httpProxy;
             }
             var initBasemaps = appConfig.map.basemaps[0] || [];
-            config_1.default.appConfig.epsg = epsg4326;
+            esriConfig.appConfig.epsg = epsg4326;
             this.initMap(initBasemaps, viewOptions);
-            utils_1.default.createCustomCorner(this.view);
+            utils.createCustomCorner(this.view);
             this.initWidget(appConfig.widgets || []);
             this.executeNewMethods();
         }
         MapApp.prototype.initMap = function (initBasemaps, viewOptions) {
             var me = this;
             if (initBasemaps.length > 0) {
-                var baseMap = LayerFactory_1.default.createBaseLayer(initBasemaps, this.callBackFn);
+                var baseMap = LayerFactory.createBaseLayer(initBasemaps, this.callBackFn);
                 this.map = new Map_1.default({
                     basemap: baseMap
                 });
@@ -67,10 +78,10 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             var minZoom = option.constraints.minZoom;
             var maxZoom = option.constraints.maxZoom;
             option.map = this.map;
-            option.scale = config_1.default.appConfig.epsg.lods[minZoom + 1].scale;
-            option.constraints.lods = config_1.default.appConfig.epsg.lods;
-            option.constraints.minScale = config_1.default.appConfig.epsg.lods[minZoom].scale;
-            option.constraints.maxScale = config_1.default.appConfig.epsg.lods[maxZoom].scale;
+            option.scale = esriConfig.appConfig.epsg.lods[minZoom + 1].scale;
+            option.constraints.lods = esriConfig.appConfig.epsg.lods;
+            option.constraints.minScale = esriConfig.appConfig.epsg.lods[minZoom].scale;
+            option.constraints.maxScale = esriConfig.appConfig.epsg.lods[maxZoom].scale;
             this.view = new MapView_1.default(option);
         };
         MapApp.prototype.executeNewMethods = function () {
@@ -81,7 +92,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             var me = this;
             if (this.appConfig.map.maskService.disable) {
                 var maskService = this.appConfig.map.maskService;
-                var borderLayer = LayerFactory_1.default.createLayer(maskService);
+                var borderLayer = LayerFactory.createLayer(maskService);
                 this.baseLayers.push(borderLayer);
                 this.addLayer(borderLayer);
                 var pathArr_1 = [];
@@ -98,7 +109,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
                             if (index === layers.length - 1) {
                                 var mySymbol = this.appConfig.map.maskService.symbol;
                                 var maskInfo = { points: pathArr_1, symbol: mySymbol };
-                                var maskLayer = LayerFactory_1.default.createMaskLayer(maskInfo);
+                                var maskLayer = LayerFactory.createMaskLayer(maskInfo);
                                 me.addLayer(maskLayer);
                                 me.baseLayers.push(maskLayer);
                             }
@@ -113,7 +124,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             if (xzqhService.disable || init) {
                 this.getServiceInfo(xzqhService.url).then(function (res) {
                     var features = res.features;
-                    var gLayer = LayerFactory_1.default.createGraphicLayer(features, xzqhService.needTransform || false, xzqhService.colors);
+                    var gLayer = LayerFactory.createGraphicLayer(features, xzqhService.needTransform || false, xzqhService.colors);
                     gLayer.id = xzqhService.id;
                     gLayer.title = xzqhService.title;
                     if (typeof visible === 'boolean') {
@@ -127,16 +138,16 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             }
         };
         MapApp.prototype.addDynamicLayer = function (option) {
-            return LayerFactory_1.default.createDynamicLayer(option);
+            return LayerFactory.createDynamicLayer(option);
         };
         MapApp.prototype.addDynamicLayer2 = function (params, name) {
-            return LayerFactory_1.default.createDynamicLayer2(params, name);
+            return LayerFactory.createDynamicLayer2(params, name);
         };
         MapApp.prototype.initWidget = function (widgets) {
             if (this.view) {
                 var me_1 = this;
-                utils_1.default.visitConf(widgets, function (widget, index) {
-                    var newWidget = widgetUtils_1.default.createWidget(widget.name, me_1.view, widget.position, index);
+                utils.visitConf(widgets, function (widget, index) {
+                    var newWidget = widgetUtils.createWidget(widget.name, me_1.view, widget.position, index);
                     me_1.widgets.push(newWidget);
                 });
                 this.view.ui.remove('attribution');
@@ -149,15 +160,15 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             });
         };
         MapApp.prototype.createLayer = function (layerInfo) {
-            return LayerFactory_1.default.createLayer(layerInfo);
+            return LayerFactory.createLayer(layerInfo);
         };
         MapApp.prototype.getServiceAllLayers = function (url) {
-            return request_1.default(url, {
+            return esriRequest(url, {
                 responseType: 'json'
             });
         };
         MapApp.prototype.getServiceStatus = function (url) {
-            return request_1.default(url, {
+            return esriRequest(url, {
                 query: {
                     f: 'json'
                 },
@@ -171,7 +182,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
                 method: method || 'post',
                 responseType: 'json'
             };
-            return request_1.default(url, option);
+            return esriRequest(url, option);
         };
         // 获取服务信息
         MapApp.prototype.getServiceInfo = function (url) {
@@ -197,7 +208,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             //         return val
             //     }
             // })
-            watchUtils_1.default.watch(this.layerLoadedObj, layerId, callback);
+            watchUtils.watch(this.layerLoadedObj, layerId, callback);
         };
         MapApp.prototype.addLayerEvent = function (layerId, eventName, callback) {
             var me = this;
@@ -224,7 +235,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
          */
         MapApp.prototype.addLayerToMap = function (layerInfo) {
             var me = this;
-            return promiseUtils_1.default.create(function (resolve) {
+            return promiseUtils.create(function (resolve) {
                 var layer = me.createLayer(layerInfo);
                 me.addLayer(layer).then(function (res) {
                     resolve(res);
@@ -234,7 +245,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
         MapApp.prototype.addLayer = function (layer, index) {
             var me = this;
             me.layerLoadedObj[layer.id] = false;
-            return promiseUtils_1.default.create(function (resolve) {
+            return promiseUtils.create(function (resolve) {
                 layer
                     .load()
                     .then(function (res) {
@@ -377,10 +388,10 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
         };
         MapApp.prototype.setBaseLayerVisiblity = function () { };
         MapApp.prototype.showSelectedFeature = function (feature) {
-            LayerFactory_1.default.showSelectedFeature(this, feature);
+            LayerFactory.showSelectedFeature(this, feature);
         };
         MapApp.prototype.showAllFeatures = function (features) {
-            LayerFactory_1.default.showAllFeatures(this, features);
+            LayerFactory.showAllFeatures(this, features);
         };
         /**
          *
@@ -406,7 +417,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
         MapApp.prototype.parseJsonLayer = function (geojson, parser) {
             for (var i in geojson.features) {
                 var geojson_geometry = parser.convert(geojson.features[i].geometry);
-                var arcgis_geometry = jsonUtils_1.default.fromJSON(geojson_geometry);
+                var arcgis_geometry = jsonUtils.fromJSON(geojson_geometry);
                 var attributes = geojson.features[i].properties;
                 var g = new Graphic_1.default({
                     geometry: arcgis_geometry,
@@ -431,7 +442,7 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             this.view.graphics.add(g);
         };
         MapApp.prototype.createLegend = function (container) {
-            this.widgetInstance.legend = widgetUtils_1.default.createLegend(this.view, container);
+            this.widgetInstance.legend = widgetUtils.createLegend(this.view, container);
         };
         return MapApp;
     }());

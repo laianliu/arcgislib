@@ -1,6 +1,11 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/widgets/Sketch", "esri/layers/GraphicsLayer"], function (require, exports, Sketch_1, GraphicsLayer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Sketch_1 = __importDefault(Sketch_1);
+    GraphicsLayer_1 = __importDefault(GraphicsLayer_1);
     var GraphicsLayer = /** @class */ (function () {
         function GraphicsLayer(view, position, index) {
             this.view = view;

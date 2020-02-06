@@ -1,4 +1,4 @@
-import Draw from 'esri/views/draw/Draw'
+import Draw1 from 'esri/views/draw/Draw'
 import Graphic from 'esri/Graphic'
 import Polygon from 'esri/geometry/Polygon'
 import Point from 'esri/geometry/Point'
@@ -9,7 +9,7 @@ export default class Draw {
   constructor(view: object, position: object, index: number) {
     this.draw = null
     this.graphic = null
-    this.draw = new Draw({
+    this.draw = new Draw1({
       view: view
     })
   }

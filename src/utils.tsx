@@ -1,4 +1,4 @@
-import domConstruct from 'dojo/dom-construct'
+import domConstruct = require('dojo/dom-construct')
 export function visitConf(items: [], fn: FunctionStringCallback) {
   items.forEach(function(item, index) {
     fn(item, index)

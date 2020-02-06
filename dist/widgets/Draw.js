@@ -1,6 +1,15 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/views/draw/Draw", "esri/Graphic", "esri/geometry/Polygon", "esri/geometry/Point", "esri/geometry/Circle", "esri/layers/GraphicsLayer"], function (require, exports, Draw_1, Graphic_1, Polygon_1, Point_1, Circle_1, GraphicsLayer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Draw_1 = __importDefault(Draw_1);
+    Graphic_1 = __importDefault(Graphic_1);
+    Polygon_1 = __importDefault(Polygon_1);
+    Point_1 = __importDefault(Point_1);
+    Circle_1 = __importDefault(Circle_1);
+    GraphicsLayer_1 = __importDefault(GraphicsLayer_1);
     var Draw = /** @class */ (function () {
         function Draw(view, position, index) {
             this.draw = null;

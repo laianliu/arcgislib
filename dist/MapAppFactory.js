@@ -1,17 +1,21 @@
-define(["require", "exports", "esri/core/lang", "esri/core/promiseUtils", "./MapApp"], function (require, exports, lang_1, promiseUtils_1, MapApp_1) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+define(["require", "exports", "esri/core/lang", "esri/core/promiseUtils", "./MapApp"], function (require, exports, lang, promiseUtils, MapApp_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    MapApp_1 = __importDefault(MapApp_1);
     var MapAppFactory = /** @class */ (function () {
         function MapAppFactory() {
-            mapApps = {};
-            appConfig = null;
+            this.mapApps = {};
+            this.appConfig = null;
         }
         MapAppFactory.prototype.createMapApp = function (appConfig, fn) {
             var me = this;
             if (!appConfig)
                 return;
             var curMapApp = this.mapApps[appConfig.mapview.container];
-            return promiseUtils_1.default.create(function (resolve) {
+            return promiseUtils.create(function (resolve) {
                 if (appConfig.delay > 0) {
                     setTimeout(function () {
                         var mapApp = curMapApp || me._createMapApp(appConfig, fn);
@@ -28,7 +32,7 @@ define(["require", "exports", "esri/core/lang", "esri/core/promiseUtils", "./Map
             if (appConfig.mapview.map)
                 delete appConfig.mapview.map;
             var mapAppId = appConfig.mapview.container;
-            var currentAppConfig = lang_1.default.clone(appConfig);
+            var currentAppConfig = lang.clone(appConfig);
             var currentMapApp = null;
             if (!this.mapApps[mapAppId]) {
                 currentMapApp = new MapApp_1.default(currentAppConfig, fn);

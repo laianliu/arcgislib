@@ -1,5 +1,5 @@
-import urlUtils from 'esri/core/urlUtils'
-import esriConfig from 'esri/config'
+import urlUtils = require('esri/core/urlUtils')
+import esriConfig = require('esri/config')
 export function addProxyRule(layerInfo: {}) {
   const httpProxy = esriConfig.appConfig.httpProxy
   if (layerInfo.url && httpProxy.localUseProxy) {

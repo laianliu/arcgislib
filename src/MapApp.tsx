@@ -1,22 +1,23 @@
-import lang from 'dojo/_base/lang'
-import array from 'dojo/_base/array'
-import topic from 'dojo/topic'
+import lang = require('dojo/_base/lang')
+import array = require('dojo/_base/array')
+import topic = require('dojo/topic')
 import Map from 'esri/Map'
 import MapView from 'esri/views/MapView'
 import Graphic from 'esri/Graphic'
-import jsonUtils from 'esri/geometry/support/jsonUtils'
+import jsonUtils = require('esri/geometry/support/jsonUtils')
 import AttributeQuery from './analyst/AttributeQuery'
 import SpatialQuery from './analyst/SpatialQuery'
 import Point from 'esri/geometry/Point'
-import esriConfig from 'esri/config'
-import LayerFactory from './LayerFactory'
-import utils from './utils'
-import esriRequest from 'esri/request'
+import esriConfig = require('esri/config')
+import LayerFactory = require('./LayerFactory')
+import utils = require('./utils')
+import esriRequest = require('esri/request')
 import QueryTask from 'esri/tasks/QueryTask'
 import Query from 'esri/tasks/support/Query'
-import widgetUtils from './widgetUtils'
-import promiseUtils from 'esri/core/promiseUtils'
-import watchUtils from 'esri/core/watchUtils'
+import widgetUtils = require('./widgetUtils')
+import epsg4326 = require('./epsg/4326')
+import promiseUtils = require('esri/core/promiseUtils')
+import watchUtils = require('esri/core/watchUtils')
 
 export default class MapApp {
   constructor(appConfig: object, callBackFn: FunctionStringCallback) {

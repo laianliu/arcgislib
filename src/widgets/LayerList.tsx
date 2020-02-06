@@ -1,11 +1,11 @@
 import Expand from 'esri/widgets/Expand'
-import LayerList from 'esri/widgets/LayerList'
+import LayerList1 from 'esri/widgets/LayerList'
 export default class LayerList {
   constructor(view: object, position: object, index: number) {
     this.layerList = null
 
     this.layerList = new Expand({
-      content: new LayerList({
+      content: new LayerList1({
         view: view
       }),
       view: view,

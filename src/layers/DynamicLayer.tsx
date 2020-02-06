@@ -1,7 +1,7 @@
-import lang from 'dojo/_base/lang'
-import url from 'dojo/_base/url'
-import WebTileLayer from 'esri/layers/WebTileLayer'
-export default WebTileLayer.createSubclass({
+import lang = require('dojo/_base/lang')
+import url = require('dojo/_base/url')
+import WebTileLayer = require('esri/layers/WebTileLayer')
+const DynamicLayer = WebTileLayer.createSubclass({
   declaredClass: 'DynamicLayer',
   normalizeCtorArgs: function(b, c) {
     this.layerDefinitions = null
@@ -153,3 +153,4 @@ export default WebTileLayer.createSubclass({
     return requestUrl.join('')
   }
 })
+export default DynamicLayer

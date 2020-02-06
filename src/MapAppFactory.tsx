@@ -1,10 +1,10 @@
-import lang from 'esri/core/lang'
-import promiseUtils from 'esri/core/promiseUtils'
+import lang = require('esri/core/lang')
+import promiseUtils = require('esri/core/promiseUtils')
 import MapApp from './MapApp'
 export default class MapAppFactory {
   constructor() {
-    mapApps = {}
-    appConfig = null
+    this.mapApps = {}
+    this.appConfig = null
   }
   createMapApp(appConfig: {}, fn: FunctionStringCallback) {
     const me = this

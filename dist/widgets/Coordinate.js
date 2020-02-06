@@ -1,6 +1,12 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/widgets/CoordinateConversion", "esri/geometry/Point", "esri/Graphic"], function (require, exports, CoordinateConversion_1, Point_1, Graphic_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    CoordinateConversion_1 = __importDefault(CoordinateConversion_1);
+    Point_1 = __importDefault(Point_1);
+    Graphic_1 = __importDefault(Graphic_1);
     var Coordinate = /** @class */ (function () {
         function Coordinate(view, position, index) {
             this.coordinateConversion = null;

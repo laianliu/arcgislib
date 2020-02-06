@@ -1,6 +1,10 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/layers/support/TileInfo"], function (require, exports, TileInfo_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    TileInfo_1 = __importDefault(TileInfo_1);
     exports.lods = [
         {
             level: 1,

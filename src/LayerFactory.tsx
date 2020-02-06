@@ -5,13 +5,13 @@ import FeatureLayer from 'esri/layers/FeatureLayer'
 import GeoJSONLayer from 'esri/layers/GeoJSONLayer'
 import WMTSLayer from './layers/WMTSLayer'
 import DynamicLayer from './layers/DynamicLayer'
-import url from 'dojo/_base/url'
-import esriConfig from 'esri/config'
-import proxyUtils from './proxyUtils'
-import utils from './utils'
+import url = require('dojo/_base/url')
+import esriConfig = require('esri/config')
+import proxyUtils = require('./proxyUtils')
+import utils = require('./utils')
 import Basemap from 'esri/Basemap'
 import Graphic from 'esri/Graphic'
-import webMercatorUtils from 'esri/geometry/support/webMercatorUtils'
+import webMercatorUtils = require('esri/geometry/support/webMercatorUtils')
 export const subDomains = ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7']
 const layerMap = {
   tiled: TileLayer,
@@ -70,11 +70,11 @@ export function createLayer(layerInfo: LayerInfo) {
   }
   return layer
 }
-export function createBaseLayer(layerInfo: LayerInfo, fn: Function) {
-  if (layerInfo.length > 0) {
+export function createBaseLayer(layerInfos: LayerInfo[], fn: Function) {
+  if (layerInfos.length > 0) {
     const me = this
     let baseLayers = []
-    utils.visitConf(layerInfo, layerInfo => {
+    utils.visitConf(layerInfos, layerInfo => {
       const baseLayer = me.createLayer(layerInfo)
       baseLayer
         .load()
@@ -95,7 +95,7 @@ export function createBaseLayer(layerInfo: LayerInfo, fn: Function) {
     let baseMap = new Basemap({
       baseLayers: baseLayers
     })
-    baseMap.title = layerInfo[0].title
+    baseMap.title = layerInfos[0].title
     return baseMap
   }
 }

@@ -1,10 +1,10 @@
-import lang from 'dojo/_base/lang'
-import url from 'dojo/_base/url'
-import string from 'dojo/string'
-import WebTileLayer from 'esri/layers/WebTileLayer'
-import urlUtils from 'esri/core/urlUtils'
-import JSONSupport from 'esri/core/JSONSupport'
-export default WebTileLayer.createSubclass([JSONSupport], {
+import lang = require('dojo/_base/lang')
+import url = require('dojo/_base/url')
+import string = require('dojo/string')
+import WebTileLayer = require('esri/layers/WebTileLayer')
+import urlUtils = require('esri/core/urlUtils')
+import JSONSupport = require('esri/core/JSONSupport')
+const WMTSLayer = WebTileLayer.createSubclass([JSONSupport], {
   declaredClass: 'WMTSLayer',
   normalizeCtorArgs: function(b, c) {
     return typeof b === 'string' ? lang.mixin({ urlTemplate: b }, c || {}) : b
@@ -112,3 +112,4 @@ export default WebTileLayer.createSubclass([JSONSupport], {
     return urlUtils.addProxy(e).trim()
   }
 })
+export default WMTSLayer

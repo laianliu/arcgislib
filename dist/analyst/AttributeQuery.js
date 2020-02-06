@@ -1,6 +1,11 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/tasks/support/Query", "esri/tasks/QueryTask"], function (require, exports, Query_1, QueryTask_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Query_1 = __importDefault(Query_1);
+    QueryTask_1 = __importDefault(QueryTask_1);
     var AttributeQuery = /** @class */ (function () {
         function AttributeQuery(mapApp, layerId, extent) {
             this.layerId = layerId;

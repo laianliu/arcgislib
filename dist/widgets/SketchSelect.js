@@ -1,6 +1,12 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/widgets/Expand", "esri/layers/GraphicsLayer", "../analyst/SpatialQuery"], function (require, exports, Expand_1, GraphicsLayer_1, SpatialQuery_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Expand_1 = __importDefault(Expand_1);
+    GraphicsLayer_1 = __importDefault(GraphicsLayer_1);
+    SpatialQuery_1 = __importDefault(SpatialQuery_1);
     var SketchSelect = /** @class */ (function () {
         function SketchSelect(view, position, index) {
             this.graphicsLayer = new GraphicsLayer_1.default();

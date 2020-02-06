@@ -6,8 +6,8 @@ import Polyline from 'esri/geometry/Polyline'
 import Circle from 'esri/geometry/Circle'
 import GraphicsLayer from 'esri/layers/GraphicsLayer'
 import SketchViewModel from 'esri/widgets/Sketch/SketchViewModel'
-import watchUtils from 'esri/core/watchUtils'
-import geometryEngine from 'esri/geometry/geometryEngine'
+import watchUtils = require('esri/core/watchUtils')
+import geometryEngine = require('esri/geometry/geometryEngine')
 export default class Buffer {
   constructor(view: object, position: object, index: number) {
     this.draw = new Draw({

@@ -1,6 +1,16 @@
-define(["require", "exports", "esri/views/draw/Draw", "esri/Graphic", "esri/geometry/Point", "esri/geometry/Polyline", "esri/geometry/Circle", "esri/layers/GraphicsLayer", "esri/widgets/Sketch/SketchViewModel", "esri/geometry/geometryEngine"], function (require, exports, Draw_1, Graphic_1, Point_1, Polyline_1, Circle_1, GraphicsLayer_1, SketchViewModel_1, geometryEngine_1) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+define(["require", "exports", "esri/views/draw/Draw", "esri/Graphic", "esri/geometry/Point", "esri/geometry/Polyline", "esri/geometry/Circle", "esri/layers/GraphicsLayer", "esri/widgets/Sketch/SketchViewModel", "esri/geometry/geometryEngine"], function (require, exports, Draw_1, Graphic_1, Point_1, Polyline_1, Circle_1, GraphicsLayer_1, SketchViewModel_1, geometryEngine) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Draw_1 = __importDefault(Draw_1);
+    Graphic_1 = __importDefault(Graphic_1);
+    Point_1 = __importDefault(Point_1);
+    Polyline_1 = __importDefault(Polyline_1);
+    Circle_1 = __importDefault(Circle_1);
+    GraphicsLayer_1 = __importDefault(GraphicsLayer_1);
+    SketchViewModel_1 = __importDefault(SketchViewModel_1);
     var Buffer = /** @class */ (function () {
         function Buffer(view, position, index) {
             this.draw = new Draw_1.default({
@@ -53,8 +63,8 @@ define(["require", "exports", "esri/views/draw/Draw", "esri/Graphic", "esri/geom
                     paths: vertices,
                     spatialReference: view.spatialReference
                 });
-                var length = geometryEngine_1.default.geodesicLength(me.polylineGraphic.geometry, me.unit);
-                var buffer = geometryEngine_1.default.geodesicBuffer(me.centerGraphic.geometry, length, me.unit);
+                var length = geometryEngine.geodesicLength(me.polylineGraphic.geometry, me.unit);
+                var buffer = geometryEngine.geodesicBuffer(me.centerGraphic.geometry, length, me.unit);
                 me.bufferGraphic.geometry = buffer;
                 me.labelGraphic.geometry = me.edgeGraphic.geometry;
                 me.labelGraphic.symbol = {
@@ -81,8 +91,8 @@ define(["require", "exports", "esri/views/draw/Draw", "esri/Graphic", "esri/geom
                 paths: vertices,
                 spatialReference: view.spatialReference
             });
-            var length = geometryEngine_1.default.geodesicLength(this.polylineGraphic.geometry, this.unit);
-            var buffer = geometryEngine_1.default.geodesicBuffer(this.centerGraphic.geometry, length, this.unit);
+            var length = geometryEngine.geodesicLength(this.polylineGraphic.geometry, this.unit);
+            var buffer = geometryEngine.geodesicBuffer(this.centerGraphic.geometry, length, this.unit);
             this.bufferGraphic.geometry = buffer;
             this.labelGraphic.geometry = this.edgeGraphic.geometry;
             this.labelGraphic.symbol = {
@@ -136,9 +146,9 @@ define(["require", "exports", "esri/views/draw/Draw", "esri/Graphic", "esri/geom
                     paths: vertices,
                     spatialReference: view.spatialReference
                 });
-                var length_1 = geometryEngine_1.default.geodesicLength(polyline, this.unit);
+                var length_1 = geometryEngine.geodesicLength(polyline, this.unit);
                 console.log(length_1);
-                var buffer = geometryEngine_1.default.geodesicBuffer(centerPoint, Number(radius), this.unit);
+                var buffer = geometryEngine.geodesicBuffer(centerPoint, Number(radius), this.unit);
                 var pointSymbol = {
                     type: 'simple-marker',
                     style: 'circle',

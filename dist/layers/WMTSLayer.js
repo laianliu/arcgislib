@@ -1,10 +1,10 @@
-define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "dojo/string", "esri/layers/WebTileLayer", "esri/core/urlUtils", "esri/core/JSONSupport"], function (require, exports, lang_1, url_1, string_1, WebTileLayer_1, urlUtils_1, JSONSupport_1) {
+define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "dojo/string", "esri/layers/WebTileLayer", "esri/core/urlUtils", "esri/core/JSONSupport"], function (require, exports, lang, url, string, WebTileLayer, urlUtils, JSONSupport) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = WebTileLayer_1.default.createSubclass([JSONSupport_1.default], {
+    var WMTSLayer = WebTileLayer.createSubclass([JSONSupport], {
         declaredClass: 'WMTSLayer',
         normalizeCtorArgs: function (b, c) {
-            return typeof b === 'string' ? lang_1.default.mixin({ urlTemplate: b }, c || {}) : b;
+            return typeof b === 'string' ? lang.mixin({ urlTemplate: b }, c || {}) : b;
         },
         properties: {
             copyright: '',
@@ -42,7 +42,7 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "dojo/string"
                 value: null,
                 dependsOn: ['urlTemplate', 'subDomains', 'urlPath'],
                 get: function () {
-                    var b = new url_1.default(this.urlTemplate);
+                    var b = new url(this.urlTemplate);
                     var c = b.scheme ? b.scheme + '://' : '//';
                     var a = c + b.authority + '/';
                     var e = this.subDomains;
@@ -70,7 +70,7 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "dojo/string"
                     if (!this.urlTemplate)
                         return null;
                     var b = this.urlTemplate;
-                    var a = new url_1.default(b);
+                    var a = new url(b);
                     // var e = this.subDomains
                     // var g = []
                     // if (a.path.indexOf('{subDomain}') !== -1) {
@@ -88,7 +88,7 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "dojo/string"
         getTileUrl: function (b, a, d) {
             b = this.levelValues[b];
             var e = this.tileServers[a % this.tileServers.length] +
-                string_1.default.substitute(this.urlPath, {
+                string.substitute(this.urlPath, {
                     level: b,
                     col: d,
                     row: a
@@ -97,7 +97,8 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "dojo/string"
                 .replace(/\{level\}/gi, b)
                 .replace(/\{row\}/gi, a)
                 .replace(/\{col\}/gi, d);
-            return urlUtils_1.default.addProxy(e).trim();
+            return urlUtils.addProxy(e).trim();
         }
     });
+    exports.default = WMTSLayer;
 });

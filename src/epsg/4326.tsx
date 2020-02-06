@@ -1,5 +1,5 @@
 import TileInfo from 'esri/layers/support/TileInfo'
-import esriConfig from 'esri/config'
+import esriConfig = require('esri/config')
 export const lods = [
   {
     level: 1,

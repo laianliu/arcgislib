@@ -1,11 +1,11 @@
 import Expand from 'esri/widgets/Expand'
-import Print from 'esri/widgets/Print'
+import Print1 from 'esri/widgets/Print'
 export default class Print {
   constructor(view: object, position: object, index: number) {
     this.print = null
     this.panel = document.getElementById('printPanel')
 
-    this.print = new Print({
+    this.print = new Print1({
       view: view,
       style: 'card',
       printServiceUrl:

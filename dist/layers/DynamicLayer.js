@@ -1,7 +1,7 @@
-define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "esri/layers/WebTileLayer"], function (require, exports, lang_1, url_1, WebTileLayer_1) {
+define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "esri/layers/WebTileLayer"], function (require, exports, lang, url, WebTileLayer) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = WebTileLayer_1.default.createSubclass({
+    var DynamicLayer = WebTileLayer.createSubclass({
         declaredClass: 'DynamicLayer',
         normalizeCtorArgs: function (b, c) {
             this.layerDefinitions = null;
@@ -9,7 +9,7 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "esri/layers/
             this.layerDrawingOptions = null;
             this.dynamicLayerObjs = [];
             this._refresh = true;
-            return typeof b === 'string' ? lang_1.default.mixin({ urlTemplate: b }, c || {}) : b;
+            return typeof b === 'string' ? lang.mixin({ urlTemplate: b }, c || {}) : b;
         },
         properties: {
             copyright: '',
@@ -47,7 +47,7 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "esri/layers/
                 value: null,
                 dependsOn: ['urlTemplate', 'subDomains', 'urlPath'],
                 get: function () {
-                    var b = new url_1.default(this.urlTemplate);
+                    var b = new url(this.urlTemplate);
                     var c = b.scheme ? b.scheme + '://' : '//';
                     var a = c + b.authority + '/';
                     var e = this.subDomains;
@@ -75,7 +75,7 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "esri/layers/
                     if (!this.urlTemplate)
                         return null;
                     var b = this.urlTemplate;
-                    var a = new url_1.default(b);
+                    var a = new url(b);
                     return b.substring(((a.scheme ? a.scheme + '://' : '//') + a.authority + '/').length);
                 }
             },
@@ -141,4 +141,5 @@ define(["require", "exports", "dojo/_base/lang", "dojo/_base/url", "esri/layers/
             return requestUrl.join('');
         }
     });
+    exports.default = DynamicLayer;
 });

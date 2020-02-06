@@ -1,10 +1,10 @@
-define(["require", "exports", "esri/core/urlUtils", "esri/config"], function (require, exports, urlUtils_1, config_1) {
+define(["require", "exports", "esri/core/urlUtils", "esri/config"], function (require, exports, urlUtils, esriConfig) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     function addProxyRule(layerInfo) {
-        var httpProxy = config_1.default.appConfig.httpProxy;
+        var httpProxy = esriConfig.appConfig.httpProxy;
         if (layerInfo.url && httpProxy.localUseProxy) {
-            urlUtils_1.default.addProxyRule({
+            urlUtils.addProxyRule({
                 proxyUrl: httpProxy.localProxyUrl,
                 urlPrefix: layerInfo.url
             });
@@ -13,8 +13,8 @@ define(["require", "exports", "esri/core/urlUtils", "esri/config"], function (re
     exports.addProxyRule = addProxyRule;
     function addTDTProxy(layerInfo) {
         var newLayerInfo = layerInfo;
-        var httpProxy = config_1.default.appConfig.httpProxy;
-        if (config_1.default.appConfig.httpProxy.tdtUseProxy) {
+        var httpProxy = esriConfig.appConfig.httpProxy;
+        if (esriConfig.appConfig.httpProxy.tdtUseProxy) {
             newLayerInfo.proxyUrl = httpProxy.tdtProxyUrl;
         }
         return newLayerInfo;

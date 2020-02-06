@@ -1,4 +1,4 @@
-import Search from 'esri/widgets/Search'
+import Search1 from 'esri/widgets/Search'
 import Expand from 'esri/widgets/Expand'
 export default class Search {
   constructor(view: object, position: object, index: number) {
@@ -7,7 +7,7 @@ export default class Search {
       view: view,
       group: 'top-right',
       expandTooltip: '搜索',
-      content: new Search({
+      content: new Search1({
         view: view,
         sources: []
       })

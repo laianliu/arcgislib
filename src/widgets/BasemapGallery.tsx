@@ -1,11 +1,11 @@
 import Expand from 'esri/widgets/Expand'
-import BasemapGallery from 'esri/widgets/BasemapGallery'
-import LayerFactory from '../LayerFactory'
-import esriConfig from 'esri/config'
+import BasemapGallery1 from 'esri/widgets/BasemapGallery'
+import LayerFactory = require('../LayerFactory')
+import esriConfig = require('esri/config')
 import LocalBasemapsSource from 'esri/widgets/BasemapGallery/support/LocalBasemapsSource'
 export default class BasemapGallery {
   constructor(view: object, position: object, index: number) {
-    const basemapGallery = new BasemapGallery({
+    const basemapGallery = new BasemapGallery1({
       view: view,
       source: this.getSource()
     })

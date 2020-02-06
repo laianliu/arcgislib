@@ -1,6 +1,18 @@
-define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLayer", "esri/layers/MapImageLayer", "esri/layers/FeatureLayer", "esri/layers/GeoJSONLayer", "./layers/WMTSLayer", "./layers/DynamicLayer", "dojo/_base/url", "esri/config", "./proxyUtils", "./utils", "esri/Basemap", "esri/Graphic", "esri/geometry/support/webMercatorUtils"], function (require, exports, TileLayer_1, GraphicsLayer_1, MapImageLayer_1, FeatureLayer_1, GeoJSONLayer_1, WMTSLayer_1, DynamicLayer_1, url_1, config_1, proxyUtils_1, utils_1, Basemap_1, Graphic_1, webMercatorUtils_1) {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLayer", "esri/layers/MapImageLayer", "esri/layers/FeatureLayer", "esri/layers/GeoJSONLayer", "./layers/WMTSLayer", "./layers/DynamicLayer", "dojo/_base/url", "esri/config", "./proxyUtils", "./utils", "esri/Basemap", "esri/Graphic", "esri/geometry/support/webMercatorUtils"], function (require, exports, TileLayer_1, GraphicsLayer_1, MapImageLayer_1, FeatureLayer_1, GeoJSONLayer_1, WMTSLayer_1, DynamicLayer_1, url, esriConfig, proxyUtils, utils, Basemap_1, Graphic_1, webMercatorUtils) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    TileLayer_1 = __importDefault(TileLayer_1);
+    GraphicsLayer_1 = __importDefault(GraphicsLayer_1);
+    MapImageLayer_1 = __importDefault(MapImageLayer_1);
+    FeatureLayer_1 = __importDefault(FeatureLayer_1);
+    GeoJSONLayer_1 = __importDefault(GeoJSONLayer_1);
+    WMTSLayer_1 = __importDefault(WMTSLayer_1);
+    DynamicLayer_1 = __importDefault(DynamicLayer_1);
+    Basemap_1 = __importDefault(Basemap_1);
+    Graphic_1 = __importDefault(Graphic_1);
     exports.subDomains = ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'];
     var layerMap = {
         tiled: TileLayer_1.default,
@@ -18,9 +30,9 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
         }
     };
     function createLayer(layerInfo) {
-        var classKey = config_1.default.mapType === '2D'
+        var classKey = esriConfig.mapType === '2D'
             ? layerInfo.type
-            : config_1.default.mapType + layerInfo.type;
+            : esriConfig.mapType + layerInfo.type;
         var keyProperties = ['url', 'title', 'visible', 'useProxy'];
         var option = {};
         for (var p in layerInfo) {
@@ -38,7 +50,7 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
                 needAddProxy = layerInfo.useProxy;
             }
             if (needAddProxy) {
-                proxyUtils_1.default.addProxyRule(layerInfo);
+                proxyUtils.addProxyRule(layerInfo);
             }
             layer = this.createWMTSLayer(layerInfo);
         }
@@ -54,11 +66,11 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
         return layer;
     }
     exports.createLayer = createLayer;
-    function createBaseLayer(layerInfo, fn) {
-        if (layerInfo.length > 0) {
+    function createBaseLayer(layerInfos, fn) {
+        if (layerInfos.length > 0) {
             var me_1 = this;
             var baseLayers_1 = [];
-            utils_1.default.visitConf(layerInfo, function (layerInfo) {
+            utils.visitConf(layerInfos, function (layerInfo) {
                 var baseLayer = me_1.createLayer(layerInfo);
                 baseLayer
                     .load()
@@ -79,7 +91,7 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
             var baseMap = new Basemap_1.default({
                 baseLayers: baseLayers_1
             });
-            baseMap.title = layerInfo[0].title;
+            baseMap.title = layerInfos[0].title;
             return baseMap;
         }
     }
@@ -87,7 +99,7 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
     function getBaseMaps(layerInfo) {
         var me = this;
         var baseMaps = [];
-        utils_1.default.visitConf(layerInfo, function (layerInfo) {
+        utils.visitConf(layerInfo, function (layerInfo) {
             var baseMap = me.createBaseLayer(layerInfo);
             baseMaps.push(baseMap);
         });
@@ -103,7 +115,7 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
                 if (myUrl.indexOf('/wmts') === -1) {
                     myUrl += '/wmts';
                 }
-                var tempUrl = new url_1.default(myUrl);
+                var tempUrl = new url(myUrl);
                 var splits = tempUrl.path.split('/');
                 var layer = splits[splits.length - 2];
                 urlTemplate =
@@ -143,12 +155,12 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
         var myWMTSLayer = new WMTSLayer_1.default(option.url
             ? {
                 urlTemplate: createUrlTemplate(option),
-                tileInfo: config_1.default.appConfig.epsg.tileInfo
+                tileInfo: esriConfig.appConfig.epsg.tileInfo
             }
             : {
                 urlTemplate: createUrlTemplate(option),
                 subDomains: exports.subDomains,
-                tileInfo: config_1.default.appConfig.epsg.tileInfo
+                tileInfo: esriConfig.appConfig.epsg.tileInfo
             });
         myWMTSLayer.id = option.id || option.title;
         myWMTSLayer.title = option.title;
@@ -160,7 +172,7 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
         if (option.url) {
             var dynamicLayer = new DynamicLayer_1.default({
                 urlTemplate: option.url,
-                tileInfo: config_1.default.appConfig.epsg.tileInfo
+                tileInfo: esriConfig.appConfig.epsg.tileInfo
             });
             dynamicLayer.title = option.title;
             dynamicLayer.id = 'DynamicLayer';
@@ -210,7 +222,7 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
         features.forEach(function (feature, index) {
             var rings;
             if (needTransform) {
-                rings = webMercatorUtils_1.default.webMercatorToGeographic(feature.geometry).rings;
+                rings = webMercatorUtils.webMercatorToGeographic(feature.geometry).rings;
             }
             else {
                 rings = feature.geometry.rings || feature.geometry.coordinates;

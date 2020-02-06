@@ -1,6 +1,12 @@
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 define(["require", "exports", "esri/widgets/Expand", "esri/widgets/AreaMeasurement2D", "esri/widgets/DistanceMeasurement2D"], function (require, exports, Expand_1, AreaMeasurement2D_1, DistanceMeasurement2D_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    Expand_1 = __importDefault(Expand_1);
+    AreaMeasurement2D_1 = __importDefault(AreaMeasurement2D_1);
+    DistanceMeasurement2D_1 = __importDefault(DistanceMeasurement2D_1);
     var Measurement2D = /** @class */ (function () {
         function Measurement2D(view, position, index) {
             this.areaMeasurement2D = null;
