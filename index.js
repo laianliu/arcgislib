@@ -3,7 +3,7 @@ export function loadGISUri(uriObj) {
     if (!uriObj) return
     return new Promise(resolve => {
         if (uriObj.cssUris) {
-            CSSRuleList.forEach(cssUri => {
+            uriObj.cssUris.forEach(cssUri => {
                 loadCss(cssUri)
             })
             if (uriObj.jsUri) {
@@ -21,7 +21,7 @@ export function loadGISModules(modules, dojoConfig) {
     window.dojoConfig = dojoConfig || {
         packages: [{
             name: 'epf-gislib',
-            location: locationPath + '/dist'
+            location: locationPath + 'dist'
         }]
     }
     const myModules = modules || 'epf-gislib/MapAppFactory'
