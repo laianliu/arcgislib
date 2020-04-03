@@ -7,6 +7,7 @@ define(["require", "exports", "esri/core/lang", "esri/core/promiseUtils", "./Map
     MapApp_1 = __importDefault(MapApp_1);
     var MapAppFactory = /** @class */ (function () {
         function MapAppFactory() {
+            window.MapAppFactory = this;
             this.mapApps = {};
             this.appConfig = null;
         }
@@ -14,36 +15,28 @@ define(["require", "exports", "esri/core/lang", "esri/core/promiseUtils", "./Map
             var me = this;
             if (!appConfig)
                 return;
-            var curMapApp = this.mapApps[appConfig.mapview.container];
+            var curMapApp = this.mapApps[appConfig.view.container];
             return promiseUtils.create(function (resolve) {
-                if (appConfig.delay > 0) {
-                    setTimeout(function () {
-                        var mapApp = curMapApp || me._createMapApp(appConfig, fn);
-                        resolve(mapApp);
-                    }, appConfig.delay);
-                }
-                else {
-                    var mapApp = curMapApp || me._createMapApp(appConfig, fn);
-                    resolve(mapApp);
-                }
+                var mapApp = curMapApp || me._createMapApp(appConfig, fn);
+                resolve(mapApp);
             });
         };
         MapAppFactory.prototype._createMapApp = function (appConfig, fn) {
-            if (appConfig.mapview.map)
-                delete appConfig.mapview.map;
-            var mapAppId = appConfig.mapview.container;
+            if (appConfig.view.map)
+                delete appConfig.view.map;
+            var mapAppId = appConfig.view.container;
             var currentAppConfig = lang.clone(appConfig);
             var currentMapApp = null;
             if (!this.mapApps[mapAppId]) {
                 currentMapApp = new MapApp_1.default(currentAppConfig, fn);
                 this.mapApps[mapAppId] = currentMapApp;
-                if (appConfig.mapview.linked) {
+                if (appConfig.view.linked) {
                     this.setMappAppState(mapAppId, true);
                 }
             }
             else {
                 if (!this.mapApps[mapAppId].visible) {
-                    if (appConfig.mapview.linked) {
+                    if (appConfig.view.linked) {
                         this.setMappAppState(this.mapApps[mapAppId]);
                     }
                 }

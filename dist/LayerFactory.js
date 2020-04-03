@@ -152,16 +152,16 @@ define(["require", "exports", "esri/layers/TileLayer", "esri/layers/GraphicsLaye
     }
     exports.createESRIWMTSUrlTemplate = createESRIWMTSUrlTemplate;
     function createWMTSLayer(option) {
-        var myWMTSLayer = new WMTSLayer_1.default(option.url
-            ? {
-                urlTemplate: createUrlTemplate(option),
-                tileInfo: esriConfig.appConfig.epsg.tileInfo
-            }
-            : {
-                urlTemplate: createUrlTemplate(option),
-                subDomains: exports.subDomains,
-                tileInfo: esriConfig.appConfig.epsg.tileInfo
-            });
+        var options = {
+            urlTemplate: createUrlTemplate(option)
+        };
+        if (!option.url) {
+            options.subDomains = exports.subDomains;
+        }
+        if (esriConfig.mapType === '2D') {
+            options.tileInfo = esriConfig.appConfig.epsg.tileInfo;
+        }
+        var myWMTSLayer = new WMTSLayer_1.default(options);
         myWMTSLayer.id = option.id || option.title;
         myWMTSLayer.title = option.title;
         myWMTSLayer.visible = option.visible;

@@ -27,7 +27,7 @@ define(["require", "exports", "esri/widgets/Expand", "esri/widgets/BasemapGaller
         }
         BasemapGallery.prototype.getSource = function () {
             return new LocalBasemapsSource_1.default({
-                basemaps: LayerFactory.getBaseMaps(esriConfig.appConfig.map.basemaps)
+                basemaps: LayerFactory.getBaseMaps(esriConfig.appConfig.map["basemaps_" + esriConfig.mapType.toLowerCase()])
             });
         };
         return BasemapGallery;

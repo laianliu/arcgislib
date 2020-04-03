@@ -23,7 +23,7 @@ export default class BasemapGallery {
   }
   getSource() {
     return new LocalBasemapsSource({
-      basemaps: LayerFactory.getBaseMaps(esriConfig.appConfig.map.basemaps)
+      basemaps: LayerFactory.getBaseMaps(esriConfig.appConfig.map[`basemaps_${esriConfig.mapType.toLowerCase()}`])
     })
   }
 }

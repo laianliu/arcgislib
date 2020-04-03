@@ -152,18 +152,18 @@ export function createESRIWMTSUrlTemplate(url: string) {
   return null
 }
 export function createWMTSLayer(option: object) {
-  let myWMTSLayer = new WMTSLayer(
-    option.url
-      ? {
-          urlTemplate: createUrlTemplate(option),
-          tileInfo: esriConfig.appConfig.epsg.tileInfo
-        }
-      : {
-          urlTemplate: createUrlTemplate(option),
-          subDomains: subDomains,
-          tileInfo: esriConfig.appConfig.epsg.tileInfo
-        }
-  )
+  const options = {
+    urlTemplate: createUrlTemplate(option)
+  }
+
+  if (!option.url) {
+    options.subDomains = subDomains
+  } 
+  if (esriConfig.mapType === '2D') {
+    options.tileInfo = esriConfig.appConfig.epsg.tileInfo
+  }
+  
+  let myWMTSLayer = new WMTSLayer(options)
   myWMTSLayer.id = option.id || option.title
   myWMTSLayer.title = option.title
   myWMTSLayer.visible = option.visible

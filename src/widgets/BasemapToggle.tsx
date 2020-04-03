@@ -5,7 +5,7 @@ import LayerFactory1 from '../LayerFactory'
 export default class BasemapToggle {
   constructor(view: object, position: object, index: number) {
     const nextBasemap = LayerFactory1.createBaseLayer(
-      esriConfig.appConfig.map.basemaps[1]
+      esriConfig.appConfig.map[`basemaps_${esriConfig.mapType.toLowerCase()}`][1]
     )
     const toggle = new BasemapToggle1({
       view: view,

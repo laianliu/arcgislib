@@ -3,39 +3,33 @@ import promiseUtils = require('esri/core/promiseUtils')
 import MapApp from './MapApp'
 export default class MapAppFactory {
   constructor() {
+    window.MapAppFactory = this
     this.mapApps = {}
     this.appConfig = null
   }
   createMapApp(appConfig: {}, fn: FunctionStringCallback) {
     const me = this
     if (!appConfig) return
-    const curMapApp = this.mapApps[appConfig.mapview.container]
+    const curMapApp = this.mapApps[appConfig.view.container]
     return promiseUtils.create(function(resolve) {
-      if (appConfig.delay > 0) {
-        setTimeout(function() {
-          const mapApp = curMapApp || me._createMapApp(appConfig, fn)
-          resolve(mapApp)
-        }, appConfig.delay)
-      } else {
-        const mapApp = curMapApp || me._createMapApp(appConfig, fn)
-        resolve(mapApp)
-      }
+      const mapApp = curMapApp || me._createMapApp(appConfig, fn)
+      resolve(mapApp)
     })
   }
   _createMapApp(appConfig: {}, fn: FunctionStringCallback) {
-    if (appConfig.mapview.map) delete appConfig.mapview.map
-    const mapAppId = appConfig.mapview.container
+    if (appConfig.view.map) delete appConfig.view.map
+    const mapAppId = appConfig.view.container
     const currentAppConfig = lang.clone(appConfig)
     let currentMapApp = null
     if (!this.mapApps[mapAppId]) {
       currentMapApp = new MapApp(currentAppConfig, fn)
       this.mapApps[mapAppId] = currentMapApp
-      if (appConfig.mapview.linked) {
+      if (appConfig.view.linked) {
         this.setMappAppState(mapAppId, true)
       }
     } else {
       if (!this.mapApps[mapAppId].visible) {
-        if (appConfig.mapview.linked) {
+        if (appConfig.view.linked) {
           this.setMappAppState(this.mapApps[mapAppId])
         }
       }

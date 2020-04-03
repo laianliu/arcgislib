@@ -3,6 +3,7 @@ import array = require('dojo/_base/array')
 import topic = require('dojo/topic')
 import Map from 'esri/Map'
 import MapView from 'esri/views/MapView'
+import SceneView from 'esri/views/SceneView'
 import Graphic from 'esri/Graphic'
 import jsonUtils = require('esri/geometry/support/jsonUtils')
 import AttributeQuery from './analyst/AttributeQuery'
@@ -21,7 +22,6 @@ import watchUtils = require('esri/core/watchUtils')
 
 export default class MapApp {
   constructor(appConfig: object, callBackFn: FunctionStringCallback) {
-    window.MapApp = this
     this.polySymbol = {
       type: 'simple-fill',
       color: [0, 255, 255, 0.7],
@@ -51,7 +51,7 @@ export default class MapApp {
     this.operationLayers = []
     this.httpProxy = {}
     this.mapType = appConfig.map['2D'] === true ? '2D' : '3D'
-    this.name = appConfig.mapview.container
+    this.name = appConfig.view.container
 
     this.callBackFn = callBackFn
     this.layerLoadedObj = {}
@@ -61,18 +61,19 @@ export default class MapApp {
     esriConfig.mapType = this.mapType
     esriConfig.httpProxy = appConfig.httpProxy
 
-    let viewOptions = appConfig.mapview || {}
+    let viewOptions = appConfig.view
     viewOptions.constraints = viewOptions.constraints || {}
 
     if (appConfig.httpProxy) {
       this.httpProxy = appConfig.httpProxy
     }
-    const initBasemaps = appConfig.map.basemaps[0] || []
+    const initBasemaps = appConfig.map[`basemaps_${this.mapType.toLowerCase()}`][0] || []
     esriConfig.appConfig.epsg = epsg4326
     this.initMap(initBasemaps, viewOptions)
     utils.createCustomCorner(this.view)
     this.initWidget(appConfig.widgets || [])
     this.executeNewMethods()
+    window[`MapApp_${this.mapType.toLowerCase()}`] = this
   }
 
   initMap(initBasemaps: [], viewOptions: {}) {
@@ -89,15 +90,21 @@ export default class MapApp {
       this.map = new Map()
     }
     let option = JSON.parse(JSON.stringify(viewOptions))
-    const minZoom = option.constraints.minZoom
-    const maxZoom = option.constraints.maxZoom
 
     option.map = this.map
-    option.scale = esriConfig.appConfig.epsg.lods[minZoom + 1].scale
-    option.constraints.lods = esriConfig.appConfig.epsg.lods
-    option.constraints.minScale = esriConfig.appConfig.epsg.lods[minZoom].scale
-    option.constraints.maxScale = esriConfig.appConfig.epsg.lods[maxZoom].scale
-    this.view = new MapView(option)
+    if (this.mapType === '2D') {
+      const minZoom = option.constraints.minZoom
+      const maxZoom = option.constraints.maxZoom
+      option.scale = esriConfig.appConfig.epsg.lods[minZoom + 1].scale
+      option.constraints.lods = esriConfig.appConfig.epsg.lods
+      option.constraints.minScale = esriConfig.appConfig.epsg.lods[minZoom].scale
+      option.constraints.maxScale = esriConfig.appConfig.epsg.lods[maxZoom].scale
+    }
+    if (this.mapType === '2D') {
+      this.view = new MapView(option)
+    } else if (this.mapType === '3D') {
+      this.view = new SceneView(option)
+    }
   }
   executeNewMethods() {
     this.addMaskLayer()
@@ -164,6 +171,7 @@ export default class MapApp {
   initWidget(widgets: []) {
     if (this.view) {
       const me = this
+      this.view.ui.components.forEach(c => this.view.ui.remove(c))
       utils.visitConf(widgets, function(widget, index) {
         const newWidget = widgetUtils.createWidget(
           widget.name,
@@ -173,8 +181,6 @@ export default class MapApp {
         )
         me.widgets.push(newWidget)
       })
-      this.view.ui.remove('attribution')
-      this.view.ui.remove('zoom')
     }
   }
   visitConf(items: [], fn: () => {}) {

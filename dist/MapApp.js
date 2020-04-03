@@ -1,11 +1,12 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", "esri/geometry/support/jsonUtils", "./analyst/AttributeQuery", "./analyst/SpatialQuery", "esri/geometry/Point", "esri/config", "./LayerFactory", "./utils", "esri/request", "esri/tasks/QueryTask", "esri/tasks/support/Query", "./widgetUtils", "./epsg/4326", "esri/core/promiseUtils", "esri/core/watchUtils"], function (require, exports, Map_1, MapView_1, Graphic_1, jsonUtils, AttributeQuery_1, SpatialQuery_1, Point_1, esriConfig, LayerFactory, utils, esriRequest, QueryTask_1, Query_1, widgetUtils, epsg4326, promiseUtils, watchUtils) {
+define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/Graphic", "esri/geometry/support/jsonUtils", "./analyst/AttributeQuery", "./analyst/SpatialQuery", "esri/geometry/Point", "esri/config", "./LayerFactory", "./utils", "esri/request", "esri/tasks/QueryTask", "esri/tasks/support/Query", "./widgetUtils", "./epsg/4326", "esri/core/promiseUtils", "esri/core/watchUtils"], function (require, exports, Map_1, MapView_1, SceneView_1, Graphic_1, jsonUtils, AttributeQuery_1, SpatialQuery_1, Point_1, esriConfig, LayerFactory, utils, esriRequest, QueryTask_1, Query_1, widgetUtils, epsg4326, promiseUtils, watchUtils) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     Map_1 = __importDefault(Map_1);
     MapView_1 = __importDefault(MapView_1);
+    SceneView_1 = __importDefault(SceneView_1);
     Graphic_1 = __importDefault(Graphic_1);
     AttributeQuery_1 = __importDefault(AttributeQuery_1);
     SpatialQuery_1 = __importDefault(SpatialQuery_1);
@@ -14,7 +15,6 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
     Query_1 = __importDefault(Query_1);
     var MapApp = /** @class */ (function () {
         function MapApp(appConfig, callBackFn) {
-            window.MapApp = this;
             this.polySymbol = {
                 type: 'simple-fill',
                 color: [0, 255, 255, 0.7],
@@ -44,24 +44,25 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             this.operationLayers = [];
             this.httpProxy = {};
             this.mapType = appConfig.map['2D'] === true ? '2D' : '3D';
-            this.name = appConfig.mapview.container;
+            this.name = appConfig.view.container;
             this.callBackFn = callBackFn;
             this.layerLoadedObj = {};
             this.appConfig = appConfig;
             esriConfig.appConfig = appConfig;
             esriConfig.mapType = this.mapType;
             esriConfig.httpProxy = appConfig.httpProxy;
-            var viewOptions = appConfig.mapview || {};
+            var viewOptions = appConfig.view;
             viewOptions.constraints = viewOptions.constraints || {};
             if (appConfig.httpProxy) {
                 this.httpProxy = appConfig.httpProxy;
             }
-            var initBasemaps = appConfig.map.basemaps[0] || [];
+            var initBasemaps = appConfig.map["basemaps_" + this.mapType.toLowerCase()][0] || [];
             esriConfig.appConfig.epsg = epsg4326;
             this.initMap(initBasemaps, viewOptions);
             utils.createCustomCorner(this.view);
             this.initWidget(appConfig.widgets || []);
             this.executeNewMethods();
+            window["MapApp_" + this.mapType.toLowerCase()] = this;
         }
         MapApp.prototype.initMap = function (initBasemaps, viewOptions) {
             var me = this;
@@ -75,14 +76,21 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
                 this.map = new Map_1.default();
             }
             var option = JSON.parse(JSON.stringify(viewOptions));
-            var minZoom = option.constraints.minZoom;
-            var maxZoom = option.constraints.maxZoom;
             option.map = this.map;
-            option.scale = esriConfig.appConfig.epsg.lods[minZoom + 1].scale;
-            option.constraints.lods = esriConfig.appConfig.epsg.lods;
-            option.constraints.minScale = esriConfig.appConfig.epsg.lods[minZoom].scale;
-            option.constraints.maxScale = esriConfig.appConfig.epsg.lods[maxZoom].scale;
-            this.view = new MapView_1.default(option);
+            if (this.mapType === '2D') {
+                var minZoom = option.constraints.minZoom;
+                var maxZoom = option.constraints.maxZoom;
+                option.scale = esriConfig.appConfig.epsg.lods[minZoom + 1].scale;
+                option.constraints.lods = esriConfig.appConfig.epsg.lods;
+                option.constraints.minScale = esriConfig.appConfig.epsg.lods[minZoom].scale;
+                option.constraints.maxScale = esriConfig.appConfig.epsg.lods[maxZoom].scale;
+            }
+            if (this.mapType === '2D') {
+                this.view = new MapView_1.default(option);
+            }
+            else if (this.mapType === '3D') {
+                this.view = new SceneView_1.default(option);
+            }
         };
         MapApp.prototype.executeNewMethods = function () {
             this.addMaskLayer();
@@ -144,14 +152,14 @@ define(["require", "exports", "esri/Map", "esri/views/MapView", "esri/Graphic", 
             return LayerFactory.createDynamicLayer2(params, name);
         };
         MapApp.prototype.initWidget = function (widgets) {
+            var _this = this;
             if (this.view) {
                 var me_1 = this;
+                this.view.ui.components.forEach(function (c) { return _this.view.ui.remove(c); });
                 utils.visitConf(widgets, function (widget, index) {
                     var newWidget = widgetUtils.createWidget(widget.name, me_1.view, widget.position, index);
                     me_1.widgets.push(newWidget);
                 });
-                this.view.ui.remove('attribution');
-                this.view.ui.remove('zoom');
             }
         };
         MapApp.prototype.visitConf = function (items, fn) {

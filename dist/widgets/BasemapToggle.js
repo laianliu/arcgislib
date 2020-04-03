@@ -8,7 +8,7 @@ define(["require", "exports", "esri/config", "esri/widgets/BasemapToggle", "../L
     LayerFactory_1 = __importDefault(LayerFactory_1);
     var BasemapToggle = /** @class */ (function () {
         function BasemapToggle(view, position, index) {
-            var nextBasemap = LayerFactory_1.default.createBaseLayer(esriConfig.appConfig.map.basemaps[1]);
+            var nextBasemap = LayerFactory_1.default.createBaseLayer(esriConfig.appConfig.map["basemaps_" + esriConfig.mapType.toLowerCase()][1]);
             var toggle = new BasemapToggle_1.default({
                 view: view,
                 nextBasemap: nextBasemap
